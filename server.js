@@ -3,11 +3,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
-const app = express();
 const expressLayouts = require('express-ejs-layouts');
-const indexRouter = require('./routes/index');
+const app = express();
+
 const authorsRouter = require('./routes/authors');
 const bodyParser = require('body-parser');
+const booksRouter = require('./routes/books');
+const indexRouter = require('./routes/index');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -24,5 +26,6 @@ db.once('open', () => console.log('Connection to mongoose successful'));
 
 app.use('/', indexRouter);
 app.use('/authors', authorsRouter);
+app.use('/books', booksRouter);
 
 app.listen(process.env.PORT || 3000);
