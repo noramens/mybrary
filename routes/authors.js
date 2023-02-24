@@ -1,4 +1,3 @@
-const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
 const Author = require('../models/author');
@@ -33,8 +32,7 @@ router.post('/', async (req, res) => {
   });
   try {
     const newAuthor = await author.save();
-    // res.redirect(`authors/${newAuthor.id}`)
-    res.redirect(`authors`);
+    res.redirect(`authors/${newAuthor.id}`);
   } catch {
     res.render('authors/new', {
       author: author,
@@ -55,10 +53,14 @@ router.get('/:id', async (req, res) => {
     res.redirect('/');
   }
 });
+
 router.get('/:id/edit', async (req, res) => {
-  const author = await Author.findById(req.params.id);
-  res.render('authors/edit', { author: new Author() });
-  // res.send('edit author' + req.params.id);
+  try {
+    const author = await Author.findById(req.params.id);
+    res.render('authors/edit', { author: author });
+  } catch {
+    res.redirect('/authors');
+  }
 });
 
 router.put('/:id', async (req, res) => {
